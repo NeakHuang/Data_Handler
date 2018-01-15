@@ -1,0 +1,82 @@
+工单号
+优先级
+标题
+状态
+模板类型
+发起人
+受理人
+受理组
+创建时间
+更新时间
+一级分类
+二级分类
+三级分类
+四级分类
+五级分类
+工单内容
+工单最新回复内容
+工单首次响应时间
+工单首次响应客服
+工单首次完结时间
+工单最近完结时间
+姓名
+手机号码
+邮箱
+账号
+编号
+角色名
+问题描述
+补发物品
+充值金额
+区服
+手机型号
+漏单类型
+平台
+系统版本
+微信版本
+影响范围
+发生时间
+渠道号
+新账号区服
+新账号编号
+原账号UID
+新账号UID
+新平台
+是否闪退
+游戏版本号
+漏单渠道
+原手机
+新手机
+原邮箱
+新邮箱
+32位ID
+身份证号码
+新密码
+新设备号
+身份证姓名
+联盟ID
+
+
+						if (i == firstRow.IndexOf("工单号")) {           // 工单号
+                            excelObj.id = Convert.ToInt32(content);
+                        } else if (i == firstRow.IndexOf("优先级")) {    // 优先级
+                            excelObj.order = content;
+                        } else if (i == firstRow.IndexOf("标题")) {    // 标题
+                            excelObj.title = content;
+                        } else if (i == firstRow.IndexOf("状态")) {    // 状态
+                            excelObj.state = content;
+                        } else if (i == firstRow.IndexOf("类型")) {    // 类型
+                            excelObj.mod = content;
+                        } else if (i == firstRow.IndexOf("发起人")) {    // 发起人
+                            excelObj.senderName = content;
+                        } else if (i == firstRow.IndexOf("受理人 ")) {    // 受理人 
+                            excelObj.acceptName = content;
+                        } else if (i == firstRow.IndexOf("漏单类型")) {   // 漏单类型
+                            excelObj.missType = content;
+                        } else if (i == firstRow.IndexOf("平台")) {   // 平台
+                            excelObj.platform = content;
+                        } else if (i == firstRow.IndexOf("渠道号")) {   // 渠道号
+                            excelObj.channel = content;
+                        } else if (i == firstRow.IndexOf("漏单渠道")) {   // 漏单渠道
+                            excelObj.missChannel = content;
+                        }

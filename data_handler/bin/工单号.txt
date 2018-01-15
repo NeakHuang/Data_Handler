@@ -1,0 +1,314 @@
+工单号
+优先级
+标题
+状态
+模板类型
+发起人
+受理人
+受理组
+创建时间
+更新时间
+一级分类
+二级分类
+三级分类
+四级分类
+五级分类
+工单内容
+工单最新回复内容
+工单首次响应时间
+工单首次响应客服
+工单首次完结时间
+工单最近完结时间
+姓名
+手机号码
+邮箱
+账号
+编号
+角色名
+补发物品
+充值金额
+区服
+手机型号
+漏单类型
+平台
+系统版本
+微信版本
+影响范围
+发生时间
+渠道号
+是否闪退
+游戏版本号
+漏单渠道
+原手机
+新手机
+原邮箱
+新邮箱
+32位ID
+身份证号码
+新密码
+新设备号
+身份证姓名
+联盟ID
+
+dic1.Add(obj.id, obj);
+dic2.Add(obj.id, obj);
+dic3.Add(obj.id, obj);
+dic4.Add(obj.id, obj);
+dic5.Add(obj.id, obj);
+dic6.Add(obj.id, obj);
+dic7.Add(obj.id, obj);
+dic8.Add(obj.id, obj);
+dic9.Add(obj.id, obj);
+dic10.Add(obj.id, obj);
+dic11.Add(obj.id, obj);
+dic12.Add(obj.id, obj);
+dic13.Add(obj.id, obj);
+dic14.Add(obj.id, obj);
+
+// 绑定实名认证
+private List<ExcelObj> dic1 = new List<ExcelObj>();
+// 绑定账号
+private List<ExcelObj> dic2 = new List<ExcelObj>();
+// 充值未到账-异常
+private List<ExcelObj> dic3 = new List<ExcelObj>();
+// 充值未到账-漏单
+private List<ExcelObj> dic4 = new List<ExcelObj>();
+// 道具补发
+private List<ExcelObj> dic5 = new List<ExcelObj>();
+// 后台功能需求
+private List<ExcelObj> dic6 = new List<ExcelObj>();
+// 默认类型
+private List<ExcelObj> dic7 = new List<ExcelObj>();
+// 其他问题
+private List<ExcelObj> dic8 = new List<ExcelObj>();
+// 实名查询账号
+private List<ExcelObj> dic9 = new List<ExcelObj>();
+// 数据关联
+private List<ExcelObj> dic10 = new List<ExcelObj>();
+// 系统bug反馈
+private List<ExcelObj> dic11 = new List<ExcelObj>();
+// 修改密码
+private List<ExcelObj> dic12 = new List<ExcelObj>();
+// 已禁平台添加设备号
+private List<ExcelObj> dic13 = new List<ExcelObj>();
+// 账号绑定信息修改
+private List<ExcelObj> dic14 = new List<ExcelObj>();
+
+
+        // 数据字典
+        private Dictionary<int, ExcelObj> dic1 = new Dictionary<int, ExcelObj>();
+
+         case "绑定实名认证":
+            dic1.Add(obj.id, obj);
+            break;
+        case "绑定账号":
+            dic2.Add(obj.id, obj);
+            break;
+        case "充值未到账":
+
+            break;
+        case "道具补发":
+        	dic5.Add(obj.id, obj);
+            break;
+        case "后台功能需求":
+        	dic6.Add(obj.id, obj);
+            break;
+        case "默认类型":
+        	dic7.Add(obj.id, obj);
+            break;
+        case "其他问题":
+        	dic8.Add(obj.id, obj);
+            break;
+        case "实名查询账号":
+        	dic9.Add(obj.id, obj);
+            break;
+        case "数据关联":
+        	dic10.Add(obj.id, obj);
+            break;
+        case "系统bug反馈":
+        	dic11.Add(obj.id, obj);
+            break;
+        case "修改密码":
+        	dic12.Add(obj.id, obj);
+            break;
+        case "已禁平台添加设备号":
+        	dic13.Add(obj.id, obj);
+            break;
+        case "账号绑定信息修改":
+        	dic14.Add(obj.id, obj);
+            break;
+
+
+            fs.WriteLine("APP\t" + APP);
+            fs.WriteLine("天命APP\t" + 天命APP);
+            fs.WriteLine("天命安卓\t" + 天命安卓);
+            fs.WriteLine("国际APP\t" + 国际APP);
+            fs.WriteLine("国际安卓\t" + 国际安卓);
+            fs.WriteLine("当乐\t" + 当乐);
+            fs.WriteLine("小米\t" + 小米);
+            fs.WriteLine("多酷\t" + 多酷);
+            fs.WriteLine("应用宝\t" + 应用宝);
+
+ fs.WriteLine("APP：" + APP);
+
+WriteTxt(@"..\data\", "绑定实名认证", list1, package);
+WriteTxt(@"..\data\", "绑定账号", list2, package);
+WriteTxt(@"..\data\", "道具补发", list3, package);
+WriteTxt(@"..\data\", "后台功能需求", list4, package);
+WriteTxt(@"..\data\", "默认类型", list5, package);
+WriteTxt(@"..\data\", "其他问题", list6, package);
+WriteTxt(@"..\data\", "实名查询账号", list7, package);
+WriteTxt(@"..\data\", "数据关联", list8, package);
+WriteTxt(@"..\data\", "系统bug反馈", list9, package);
+WriteTxt(@"..\data\", "修改密码", list10, package);
+WriteTxt(@"..\data\", "已禁平台添加设备号", list11, package);
+WriteTxt(@"..\data\", "账号绑定信息修改", list12, package);
+
+WriteOrders(@"..\data\", "充值未到账-异常", listOrderExcp);
+WriteOrders(@"..\data\", "充值未到账-漏单", listOrderMiss);
+
+  switch (obj.mod) {
+                case "绑定实名认证":
+                    dic1.Add(obj);
+                    break;
+                case "绑定账号":
+                    dic2.Add(obj);
+                    break;
+                case "充值未到账":
+                    if (obj.missType.Contains("异常") || obj.missType.Contains("異常")) {
+                        dic3.Add(obj);
+                    } else {
+                        dic4.Add(obj);
+                    }
+                    break;
+                case "道具补发":
+                    dic5.Add(obj);
+                    break;
+                case "后台功能需求":
+                    dic6.Add(obj);
+                    break;
+                case "默认类型":
+                    dic7.Add(obj);
+                    break;
+                case "其他问题":
+                    dic8.Add(obj);
+                    break;
+                case "实名查询账号":
+                    dic9.Add(obj);
+                    break;
+                case "数据关联":
+                    dic10.Add(obj);
+                    break;
+                case "系统bug反馈":
+                    dic11.Add(obj);
+                    break;
+                case "修改密码":
+                    dic12.Add(obj);
+                    break;
+                case "已禁平台添加设备号":
+                    dic13.Add(obj);
+                    break;
+                case "账号绑定信息修改":
+                    dic14.Add(obj);
+                    break;
+            }
+
+
+纯运营可以解决：
+1）玩家信息：1修改密码，2实名查询，3绑定实名认证，4帐号绑定修改，5绑定帐号
+2）玩家行为限制：6封禁操作
+3）补偿：7道具补发
+4）充值反馈：8未到账
+
+需要运营技术联动：
+5）9数据关联
+
+技术解决：
+6）10系统BUG
+
+11皇上吉祥
+12其他问题
+
+if (obj.missChannel.Contains("应用宝")) {
+	应用宝++;
+} else if (obj.missChannel.Contains("VIVO")) {
+	VIVO++;
+} else if (obj.missChannel.Contains("多酷")) {
+	多酷++;
+} else if (obj.missChannel.Contains("华为")) {
+	华为++;
+} else if (obj.missChannel.Contains("九游")) {
+	九游++;
+} else if (obj.missChannel.Contains("360")) {
+	360++;
+} else if (obj.missChannel.Contains("xy助手")) {
+	xy助手++;
+} else if (obj.missChannel.Contains("魅族")) {
+	魅族++;
+} else if (obj.missChannel.Contains("oppo")) {
+	oppo++;
+} else if (obj.missChannel.Contains("联想")) {
+	联想++;
+} else if (obj.missChannel.Contains("小米")) {
+	小米++;
+} else if (obj.missChannel.Contains("91")) {
+	91++;
+} 
+"APP", "天命APP", "天命安卓", "国际APP", "国际安卓", "应用宝", "VIVO", "多酷", "华为", "九游", "安卓360", "xy助手", "魅族", "oppo", "联想", "小米", "安卓91"
+
+            WriteTxt(path, "绑定实名认证", list1, package);
+            WriteTxt(path, "绑定账号", list2, package);
+            WriteTxt(path, "道具补发", list3, package);
+            WriteTxt(path, "后台功能需求", list4, package);
+            WriteTxt(path, "默认类型", list5, package);
+            WriteTxt(path, "其他问题", list6, package);
+            WriteTxt(path, "实名查询账号", list7, package);
+            WriteTxt(path, "数据关联", list8, package);
+            WriteTxt(path, "系统bug反馈", list9, package);
+            WriteTxt(path, "修改密码", list10, package);
+            WriteTxt(path, "已禁平台添加设备号", list11, package);
+            WriteTxt(path, "账号绑定信息修改", list12, package);
+
+            if (obj.platform.Contains("APP区")) {
+                    APP++;
+                    channelNum[0]++;
+                } else if (obj.platform.Contains("天命")) {
+                    if (obj.missChannel.Contains("APP")) {
+                        channelNum[1]++;
+                    } else {
+                        channelNum[2]++;
+                    }
+                } else if (obj.platform.Contains("国际")) {
+                    if (obj.missChannel.Contains("APP")) {
+                        channelNum[3]++;
+                    } else {
+                        channelNum[4]++;
+                    }
+                } else if (obj.platform.Contains("安卓")) {
+                    if (obj.missChannel.Contains("应用宝")) {
+                        channelNum[5]++;
+                    } else if (obj.missChannel.Contains("VIVO")) {
+                        channelNum[6]++;
+                    } else if (obj.missChannel.Contains("多酷")) {
+                        channelNum[7]++;
+                    } else if (obj.missChannel.Contains("华为")) {
+                        channelNum[8]++;
+                    } else if (obj.missChannel.Contains("九游")) {
+                        channelNum[9]++;
+                    } else if (obj.missChannel.Contains("360")) {
+                        channelNum[10]++;
+                    } else if (obj.missChannel.Contains("xy助手")) {
+                        channelNum[11]++;
+                    } else if (obj.missChannel.Contains("魅族")) {
+                        channelNum[12]++;
+                    } else if (obj.missChannel.Contains("oppo")) {
+                        channelNum[13]++;
+                    } else if (obj.missChannel.Contains("联想")) {
+                        channelNum[14]++;
+                    } else if (obj.missChannel.Contains("小米")) {
+                        channelNum[15]++;
+                    } else if (obj.missChannel.Contains("91")) {
+                        channelNum[16]++;
+                    }
+                }
+            }

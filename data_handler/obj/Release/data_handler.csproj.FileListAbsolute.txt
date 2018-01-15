@@ -1,0 +1,15 @@
+F:\study\data_C#\data_handler\data_handler\bin\Release\data_handler.exe
+F:\study\data_C#\data_handler\data_handler\bin\Release\data_handler.pdb
+F:\study\data_C#\data_handler\data_handler\bin\Release\ExcelDataReader.dll
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.dataForm.resources
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.Properties.Resources.resources
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.csproj.GenerateResource.Cache
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.exe
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.pdb
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.csprojResolveAssemblyReference.cache
+F:\study\data_C#\data_handler\data_handler\obj\Release\Interop.Office.dll
+F:\study\data_C#\data_handler\data_handler\obj\Release\data_handler.csproj.ResolveComReference.cache
+F:\study\data_C#\data_handler\data_handler\bin\Release\EPPlus.dll
+F:\study\data_C#\data_handler\data_handler\bin\Release\Excel.dll
+F:\study\data_C#\data_handler\data_handler\bin\Release\ICSharpCode.SharpZipLib.dll
+F:\study\data_C#\data_handler\data_handler\bin\Release\Qzgame.Core.Editor.dll
