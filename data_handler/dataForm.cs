@@ -163,7 +163,7 @@ namespace data_handler {
 
             System.IO.StreamWriter fs = new System.IO.StreamWriter(txtPath, true);
             string[] channelName = { "APP", "天命APP", "天命安卓", "国际APP", "国际安卓", "应用宝",
-                "VIVO", "多酷", "华为", "九游", "安卓360", "xy助手", "魅族", "oppo", "联想", "小米", "安卓91" };
+                "VIVO", "多酷", "华为", "九游", "安卓360", "xy助手", "魅族", "oppo", "联想", "小米", "安卓91", "太祖" };
             int[] channelNum = new int[channelName.Length];
             foreach (ExcelObj obj in listMiss) {
                 //string line = obj.id + "\t" + obj.mod + "\t" + obj.missType;
@@ -207,6 +207,8 @@ namespace data_handler {
                         channelNum[15]++;
                     } else if (obj.missChannel.Contains("91")) {
                         channelNum[16]++;
+                    } else if (obj.missChannel.Contains("太祖")) {
+                        channelNum[17]++;
                     }
                 }
             }
