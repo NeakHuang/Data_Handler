@@ -9,6 +9,9 @@ namespace data_handler {
 
 
     public partial class dataForm : Form {
+        // 打开文本窗
+        OpenFileDialog ofDiag = new OpenFileDialog();
+
         // 首行
         private List<string> firstRow = new List<string>();
 
@@ -42,40 +45,206 @@ namespace data_handler {
         // 充值未到账-漏单
         private List<ExcelObj> listOrderMiss = new List<ExcelObj>();
 
+        private bool 重复提交box1 = true;
+        private bool 重复记录box2 = true;
+        private bool 模板错误box3 = true;
+        private bool 无需处理box4 = false;
+        private bool 信息不全box5 = false;
+        private bool 待跟进box6 = false;
+
         private string _strFilePath;
         public dataForm() {
             InitializeComponent();
             // 关闭分析按钮，当选择文件后才可以点击
-            button2.Enabled = false;
+            resultBtn.Enabled = false;
 
             // 关闭textBox1的输入
             textBox1.Enabled = false;
             // 关闭textBox2的输入
             textBox2.Enabled = false;
         }
+
+        #region 文件选取按钮事件处理
+        private void selectBtn_Click(object sender, EventArgs e) {
+            ofDiag.Filter = "文本文件|*.xls;*.xlsx";
+            if (ofDiag.ShowDialog() == DialogResult.OK) {
+                this.textBox1.Text = Path.GetFileName(ofDiag.FileName);
+            } else {
+                this.textBox1.Text = "文件选取失败";
+            }
+        }
+        #endregion
+
+        #region 分析文件按钮事件处理
         /// <summary>
         /// 分析文件按钮
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e) {
-            OpenFileDialog ofDiag = new OpenFileDialog();
-            ofDiag.Filter = "文本文件|*.xls;*.xlsx";
+        private void processBtn_Click(object sender, EventArgs e) {
             // 重置所有list
             resetList();
 
-            if (ofDiag.ShowDialog() == DialogResult.OK) {
-                this.textBox1.Text = "文件选取成功";
-                _strFilePath = ofDiag.FileName;
-                // 分析处理
-                process_analyze();
+            _strFilePath = ofDiag.FileName;
+            // 分析处理
+            process_analyze();
 
-                button2.Enabled = true;
+            resultBtn.Enabled = true;
+        }
 
-            } else {
-                this.textBox1.Text = "文件选取失败";
+        private void resetList() {
+            firstRow.Clear();
+
+            list1.Clear();
+            list2.Clear();
+            list3.Clear();
+            list4.Clear();
+            list5.Clear();
+            list6.Clear();
+            list7.Clear();
+            list8.Clear();
+            list9.Clear();
+            list10.Clear();
+            list11.Clear();
+            list12.Clear();
+
+            listOrderExcp.Clear();
+            listOrderMiss.Clear();
+        }
+
+        /// <summary>
+        /// 处理分析
+        /// </summary>
+        private void process_analyze() {
+            FileStream stream = File.Open(_strFilePath, FileMode.Open, FileAccess.Read);
+            var reader = ExcelReaderFactory.CreateReader(stream);
+
+            //结构
+            //row1 中文注释
+            //row2 开始常规数据
+            int row = 0;
+            do {
+                while (reader.Read()) {
+                    row++;
+                    ExcelObj excelObj = new ExcelObj();
+                    for (int i = 0; i < reader.FieldCount; i++) {
+                        string content = reader.GetValue(i).ToString();
+                        if (row == 1) {
+                            firstRow.Add(content.Trim());
+                            continue;
+                        }
+                        if (i == firstRow.IndexOf("工单号")) {            // 工单号
+                            excelObj.id = Convert.ToInt32(content);
+                        } else if (i == firstRow.IndexOf("优先级")) {     // 优先级
+                            excelObj.order = content;
+                        } else if (i == firstRow.IndexOf("标题")) {       // 标题
+                            excelObj.title = content;
+                        } else if (i == firstRow.IndexOf("状态")) {       // 状态
+                            excelObj.state = content;
+                        } else if (i == firstRow.IndexOf("模板类型")) {   // 模板类型
+                            excelObj.mod = content;
+                        } else if (i == firstRow.IndexOf("发起人")) {     // 发起人
+                            excelObj.senderName = content;
+                        } else if (i == firstRow.IndexOf("受理人 ")) {    // 受理人 
+                            excelObj.acceptName = content;
+                        } else if (i == firstRow.IndexOf("漏单类型")) {   // 漏单类型
+                            excelObj.missType = content;
+                        } else if (i == firstRow.IndexOf("平台")) {       // 平台
+                            excelObj.platform = content;
+                        } else if (i == firstRow.IndexOf("渠道号")) {     // 渠道号
+                            excelObj.channel = content;
+                        } else if (i == firstRow.IndexOf("漏单渠道")) {   // 漏单渠道
+                            excelObj.missChannel = content;
+                        }
+                    }
+                    if (row != 1) {
+                        // 归类内容
+                        classifyExcelObj(excelObj);
+                    }
+                }
+            } while (reader.NextResult());
+            stream.Close();
+        }
+
+        /// <summary>
+        /// 归类内容
+        /// </summary>
+        /// <param name="obj"></param>
+        private void classifyExcelObj(ExcelObj obj) {
+            if (this.checkBox1.Checked && 
+                obj.title.Contains("重复提交") || obj.title.Contains("重複提交")) {
+                return;
+            }
+            if (this.checkBox2.Checked && 
+                obj.title.Contains("重复记录") || obj.title.Contains("重複記錄")) {
+                return;
+            }
+            if (this.checkBox3.Checked && 
+                obj.title.Contains("模板错误") || obj.title.Contains("模板錯誤")) {
+                return;
+            }
+            if (this.checkBox4.Checked && 
+                obj.title.Contains("无需处理") || obj.title.Contains("無需處理")) {
+                return;
+            }
+            if (this.checkBox5.Checked && 
+                obj.title.Contains("信息不全") || obj.title.Contains("信息不全")) {
+                return;
+            }
+            if (this.checkBox6.Checked && 
+                obj.title.Contains("待跟进") || obj.title.Contains("待跟進")) {
+                return;
+            }
+
+            switch (obj.mod) {
+                case "绑定实名认证":
+                    list1.Add(obj);
+                    break;
+                case "绑定账号":
+                    list2.Add(obj);
+                    break;
+                case "充值未到账":
+                    if (obj.missType.Contains("异常") || obj.missType.Contains("異常")) {
+                        listOrderExcp.Add(obj);
+                    } else {
+                        listOrderMiss.Add(obj);
+                    }
+                    break;
+                case "道具补发":
+                    list3.Add(obj);
+                    break;
+                case "后台功能需求":
+                    list4.Add(obj);
+                    break;
+                case "默认类型":
+                    list5.Add(obj);
+                    break;
+                case "其他问题":
+                    list6.Add(obj);
+                    break;
+                case "实名查询账号":
+                    list7.Add(obj);
+                    break;
+                case "数据关联":
+                    list8.Add(obj);
+                    break;
+                case "系统bug反馈":
+                    list9.Add(obj);
+                    break;
+                case "修改密码":
+                    list10.Add(obj);
+                    break;
+                case "已禁平台添加设备号":
+                    list11.Add(obj);
+                    break;
+                case "账号绑定信息修改":
+                    list12.Add(obj);
+                    break;
             }
         }
+        #endregion
+
+        #region 导出结果按钮事件处理
         /// <summary>
         /// 导出结果按钮
         /// </summary>
@@ -105,7 +274,7 @@ namespace data_handler {
 
             WriteOrders(@"..\data\", "充值未到账", listOrderMiss, listOrderExcp, package);
 
-            this.textBox2.Text = "分析结果完毕";
+            this.textBox2.Text = "导出结果完毕";
         }
 
         /// <summary>
@@ -129,10 +298,10 @@ namespace data_handler {
 
             // 新增文本
             System.IO.StreamWriter fs = new System.IO.StreamWriter(txtPath, true);
-            
+
             foreach (ExcelObj obj in list) {
                 index++;
-                string line = index-1 + "\t工单号:" + obj.id + "\t" + obj.title;
+                string line = index - 1 + "\t工单号:" + obj.id + "\t" + obj.title;
                 fs.WriteLine(line);// 直接追加文件末尾，换行 
 
                 sheet.Cells[index, 1].Value = obj.id;
@@ -148,7 +317,7 @@ namespace data_handler {
         /// <summary>
         /// 订单相关写入
         /// </summary>
-        private void WriteOrders(string path, string name, 
+        private void WriteOrders(string path, string name,
             List<ExcelObj> listMiss, List<ExcelObj> listExcp, ExcelPackage package) {
             ExcelWorksheet sheet = package.Workbook.Worksheets.Add(name);
 
@@ -219,8 +388,8 @@ namespace data_handler {
                 num = channelNum[i];
                 fs.WriteLine(channel + ":\t" + num);
 
-                sheet.Cells[i+2, 1].Value = channel;
-                sheet.Cells[i+2, 2].Value = num;
+                sheet.Cells[i + 2, 1].Value = channel;
+                sheet.Cells[i + 2, 2].Value = num;
             }
             fs.WriteLine("漏单订单总数:\t" + listMiss.Count);
             fs.WriteLine("----------");
@@ -240,153 +409,33 @@ namespace data_handler {
 
             package.Save();
         }
+        #endregion
 
-        /// <summary>
-        /// 处理分析
-        /// </summary>
-        private void process_analyze() {
-            FileStream stream = File.Open(_strFilePath, FileMode.Open, FileAccess.Read);
-            var reader = ExcelReaderFactory.CreateReader(stream);
 
-            //结构
-            //row1 中文注释
-            //row2 开始常规数据
-            int row = 0;
-            do {
-                while (reader.Read()) {
-                    row++;
-                    ExcelObj excelObj = new ExcelObj();
-                    for (int i = 0; i < reader.FieldCount; i++) {
-                        string content = reader.GetValue(i).ToString();
-                        if (row == 1) {
-                            firstRow.Add(content.Trim());
-                            continue;
-                        }
-                        if (i == firstRow.IndexOf("工单号")) {            // 工单号
-                            excelObj.id = Convert.ToInt32(content);
-                        } else if (i == firstRow.IndexOf("优先级")) {     // 优先级
-                            excelObj.order = content;
-                        } else if (i == firstRow.IndexOf("标题")) {       // 标题
-                            excelObj.title = content;
-                        } else if (i == firstRow.IndexOf("状态")) {       // 状态
-                            excelObj.state = content;
-                        } else if (i == firstRow.IndexOf("模板类型")) {   // 模板类型
-                            excelObj.mod = content;
-                        } else if (i == firstRow.IndexOf("发起人")) {     // 发起人
-                            excelObj.senderName = content;
-                        } else if (i == firstRow.IndexOf("受理人 ")) {    // 受理人 
-                            excelObj.acceptName = content;
-                        } else if (i == firstRow.IndexOf("漏单类型")) {   // 漏单类型
-                            excelObj.missType = content;
-                        } else if (i == firstRow.IndexOf("平台")) {       // 平台
-                            excelObj.platform = content;
-                        } else if (i == firstRow.IndexOf("渠道号")) {     // 渠道号
-                            excelObj.channel = content;
-                        } else if (i == firstRow.IndexOf("漏单渠道")) {   // 漏单渠道
-                            excelObj.missChannel = content;
-                        }
-                    }
-                    if (row != 1) {
-                        // 归类内容
-                        classifyExcelObj(excelObj);
-                    }
-                }
-            } while (reader.NextResult());
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e) {
+        #region 选择需要过滤的文件
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) {
 
         }
 
-        /// <summary>
-        /// 归类内容
-        /// </summary>
-        /// <param name="obj"></param>
-        private void classifyExcelObj(ExcelObj obj) {
-            //if (obj.title.Contains("无需处理") || obj.title.Contains("無需處理")) {
-            //    return;
-            //}
-            if (obj.title.Contains("重复提交") || obj.title.Contains("重複提交")) {
-                return;
-            }
-            if (obj.title.Contains("重复记录") || obj.title.Contains("重複記錄")) {
-                return;
-            }
-            if (obj.title.Contains("模板错误") || obj.title.Contains("模板錯誤")) {
-                return;
-            }
-            //if (obj.title.Contains("信息不全") || obj.title.Contains("信息不全")) {
-            //    return;
-            //}
-            //if (obj.title.Contains("待跟进") || obj.title.Contains("待跟進")) {
-            //    return;
-            //}
-            
-            switch (obj.mod) {
-                case "绑定实名认证":
-                    list1.Add(obj);
-                    break;
-                case "绑定账号":
-                    list2.Add(obj);
-                    break;
-                case "充值未到账":
-                    if (obj.missType.Contains("异常") || obj.missType.Contains("異常")) {
-                        listOrderExcp.Add(obj);
-                    } else {
-                        listOrderMiss.Add(obj);
-                    }
-                    break;
-                case "道具补发":
-                    list3.Add(obj);
-                    break;
-                case "后台功能需求":
-                    list4.Add(obj);
-                    break;
-                case "默认类型":
-                    list5.Add(obj);
-                    break;
-                case "其他问题":
-                    list6.Add(obj);
-                    break;
-                case "实名查询账号":
-                    list7.Add(obj);
-                    break;
-                case "数据关联":
-                    list8.Add(obj);
-                    break;
-                case "系统bug反馈":
-                    list9.Add(obj);
-                    break;
-                case "修改密码":
-                    list10.Add(obj);
-                    break;
-                case "已禁平台添加设备号":
-                    list11.Add(obj);
-                    break;
-                case "账号绑定信息修改":
-                    list12.Add(obj);
-                    break;
-            }
+        private void checkBox2_CheckedChanged(object sender, EventArgs e) {
+
         }
 
-        private void resetList() {
-            firstRow.Clear();
+        private void checkBox3_CheckedChanged(object sender, EventArgs e) {
 
-            list1.Clear();
-            list2.Clear();
-            list3.Clear();
-            list4.Clear();
-            list5.Clear();
-            list6.Clear();
-            list7.Clear();
-            list8.Clear();
-            list9.Clear();
-            list10.Clear();
-            list11.Clear();
-            list12.Clear();
-
-            listOrderExcp.Clear();
-            listOrderMiss.Clear();
         }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e) {
+
+        }
+
+        private void checkBox6_CheckedChanged(object sender, EventArgs e) {
+
+        }
+        #endregion
     }
 } // namespace
